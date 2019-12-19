@@ -1,0 +1,104 @@
+import java.util.ArrayList;
+import java.util.Collection;
+/**
+ * 
+ * @author Thomas
+ * email: thomas.ton@stonybrook.edu
+ * SBUid: 111717459
+ * 
+ */
+class WebPage {
+	/**
+	 * The WebPage class has several fields to distinguish each webpage from each other
+	 * There is a url String, int index, int rank, keyword string, and 2 other strings to help with formatting
+	 * 
+	 */
+	private String url;
+	private int index;
+	private int rank;
+	private String firstSplit;
+	private String secondSplit;
+	private String keywords;
+	public WebPage() {
+		/**
+		 * @see public Webpage() This is the empty constructor
+		 */
+	}
+	public WebPage(String url) {
+		this.url = url;
+		
+	}
+	public WebPage(String url, String keywords) {
+		this.url = url;
+		this.keywords = keywords;
+	}
+	public WebPage(String url, String keywords, int index) {
+		this.firstSplit = url;
+		this.keywords = keywords;
+		this.index = index;
+	}
+	public WebPage(String url, int index) {
+		int splitCounter = 0;
+		for(int i = 0;i<url.length();i++) {
+			splitCounter++;
+			if(url.charAt(i)=='.') {
+				break;
+			}
+		}
+		String firstSplit = url.substring(0, splitCounter+3);
+		String secondSplit = url.substring(splitCounter+3, url.length());
+		this.firstSplit = firstSplit.trim();
+		this.keywords = secondSplit.trim();
+		this.secondSplit = secondSplit.trim();
+		this.index = index;
+	}
+	public void setIndexes(int index, int rank) {
+		
+	}
+	public void setIndex(int index) {
+		this.index = index;
+	}
+	public int getIndex() {
+		return this.index;
+	}
+	public String getURL() {
+		return this.url;
+	}
+	public void setKeywords(String keywords) {
+		this.keywords = keywords;
+	}
+	
+	public String getKeywords(){
+		return this.keywords;
+	}
+	public void setSplit() {
+		/**
+		 * @see public void setSplit() will split up the line taken in from the file to make formatting easier
+		 * 
+		 */
+		int splitCounter = 0;
+		for(int i = 0;i<this.url.length();i++) {
+			splitCounter++;
+			if(url.charAt(i)=='.') {
+				break;
+			}
+		}
+		String firstSplit = this.url.substring(0, splitCounter+3);
+		String secondSplit = this.url.substring(splitCounter+3, this.url.length());
+		this.firstSplit = firstSplit.trim();
+		this.keywords = secondSplit.trim();
+		this.secondSplit = secondSplit.trim();
+		
+	}
+	public String toString() {
+		/**
+		 * @see public String toString() This method is used to return a string that is used to print out the webpage.
+		 */
+		return this.index + " | "+ this.firstSplit.trim()+" |***| "+this.keywords.trim();
+	}
+	public String getFirstSplit() {
+		return this.firstSplit;
+	}public String getSecondSplit() {
+		return this.secondSplit;
+	}
+}
