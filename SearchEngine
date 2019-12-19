@@ -1,0 +1,97 @@
+import java.io.IOException;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+/**
+ * 
+ * @author Thomas
+ * email: thomas.ton@stonybrook.edu
+ * SBUid: 111717459
+ */
+public class SearchEngine {
+	/**
+	 * the SearchEngine class contains the main method and is used to create a webgraph along with
+	 * prompting the user to enter commands to manipulate the newly created WebGraph.
+	 * There is a do while loop so the menu is repeated after a command is entered and executed.
+	 */
+	public static final String PAGES_FILE = "pages.txt";
+	public static final String LINKS_FILE = "links.txt";
+	private WebGraph web;
+	public static void main(String[] args) {
+		WebGraph web = null;
+		String command = "";
+		Scanner scanner = new Scanner(System.in);
+		try {
+			 web = WebGraph.buildFromFiles(PAGES_FILE, LINKS_FILE);
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println();
+		
+		//web.addPage("uwu", tester);
+		web.getWebPages();
+		System.out.println();
+//		web.addPage("Hello.com", "uuwuuuu!!!");
+//		web.addPage("Konichiwa.com", "oooowooo!!!");
+//		web.addPage("Hola.com", "uwuwuwu!!");
+//		
+//		for(int i = 0;i<web.getPages().size();i++) {
+//			web.getWebpage(i).setSplit();
+//		}
+//		web.removePage("Hello.com");
+	//	web.removePage("google.com");
+		web.printTable();
+		//System.out.println(web.getWebpage(3).toString());
+		do {
+			System.out.println("Loading WebGraph data...");
+			System.out.println("Success!");
+			System.out.println();
+			System.out.println("Menu:");
+			System.out.println("    (AP) - Add a new page to the graph.");
+			System.out.println("    (RP) - Remove a page from the graph.");
+			System.out.println("    (AL) - Add a link between pages in the graph.");
+			System.out.println("    (RL) - Remove a link between pages in the graph.");
+			System.out.println("    (P)  - Print the graph");
+			System.out.println("    (S)  - Search for pages with a keyword");
+			System.out.println("    (Q)  - Quit");
+			System.out.println();
+			System.out.print("Please select an option: ");
+			command  = scanner.nextLine();
+			
+			if(command.equalsIgnoreCase("Q")) {
+				System.out.println("Goodbye.");
+				break;
+			}else if(command.equalsIgnoreCase("RP")) {
+				System.out.print("Enter a URL: ");
+				
+				String url = scanner.nextLine();
+				web.removePage(url);
+			}else if(command.equalsIgnoreCase("AP")) {
+				System.out.print("Enter a URL: ");
+				String url = scanner.nextLine();
+				//System.out.println();
+				System.out.print("Enter keywords (space-separated): ");
+				String keywords = scanner.nextLine();
+				System.out.println();
+				web.addPage(url, keywords);
+			}else if(command.equalsIgnoreCase("P")) {
+				web.printTable();
+				System.out.println();
+			}else if(command.equalsIgnoreCase("S")) {
+				System.out.print("Search keyword: ");
+				String searcher = scanner.nextLine();
+				System.out.println();
+				for(int i = 0;i<web.getPages().size();i++) {
+					if(web.getPages().get(i).getSecondSplit().contains(searcher)) {
+						System.out.println(web.getPages().get(i).getFirstSplit());
+					}
+				}
+				System.out.println();
+			}
+		}while(!command.equalsIgnoreCase("q"));
+		
+	}
+	
+}
