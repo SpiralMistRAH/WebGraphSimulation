@@ -1,0 +1,153 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Scanner;
+/**
+ * 
+ * @author Thomas
+ * email: thomas.ton@stonybrook.edu
+ * SBUid: 111717459
+ */
+class WebGraph {
+	/**
+	 * The WebGraph class is used to organize the WebPages being created and comes with
+	 * several methods to manipulate them.
+	 */
+	public static final int MAX_PAGES = 40;
+	public static int counter = 0;
+	private ArrayList<WebPage> pages;
+	private int[][] edges = new int[MAX_PAGES][MAX_PAGES];
+	public WebGraph(ArrayList<WebPage> pages) {
+		this.pages = pages;
+	}
+	
+	public WebGraph(ArrayList<WebPage> pages, int[][] edges) {
+		/**
+		 * @see public WebGraph(ArrayList<WebPage> pages, int[][] edges)
+		 * This is the constructor used by the buildFromFiles method.
+		 */
+		this.pages = pages;
+		this.edges = edges;
+	}
+	public static WebGraph buildFromFiles(String pagesFile, String linksFile) throws IllegalArgumentException, IOException{
+		/**
+		 * @see public static WebGraph buildFromFiles(String pagesFile, String linksFile)
+		 * This method is used to take in two files and read them. Afterwards, information will be drawn from the files
+		 * to create a WebGraph.
+		 */
+		String line;
+		FileReader fileReader = new FileReader(pagesFile);
+		BufferedReader bufferedReader = new BufferedReader(fileReader);
+		ArrayList<String> pagesLines = new ArrayList<String>();
+		ArrayList<WebPage> webPages = new ArrayList<WebPage>();
+		ArrayList<String> websites = new ArrayList<String>();
+		
+		while((line = bufferedReader.readLine())!=null) {
+			System.out.println(line);
+			
+			pagesLines.add(line);
+			int thiscounter = 0;
+			for(int i=0 ;i<line.length();i++) {
+				thiscounter++;
+				if(line.charAt(i)=='.') {
+					break;
+				}
+			}
+			String newLine = line.substring(0, thiscounter+3).trim();
+			websites.add(newLine);
+			
+		}
+//		int[][]dummyEdges = new int[webPages.size()][webPages.size()];
+//		for(int i =0;i<dummyEdges[i].length;i++) {
+//			for(int j = 0;i<dummyEdges[j].length;j++) {
+//				
+//			}
+//		}
+		System.out.println();
+		FileReader fileReader2 = new FileReader(linksFile);
+		BufferedReader bufferedReader2 = new BufferedReader(fileReader2);
+		while((line = bufferedReader2.readLine())!=null) {
+			System.out.println(line);
+		}
+		
+		
+		
+		bufferedReader.close();
+		bufferedReader2.close();
+		for(int i=0;i<pagesLines.size();i++) {
+			WebPage newPage = new WebPage(pagesLines.get(i),counter);
+		//	newPage.setSplit();
+			
+		//	WebPage superNewPage = new WebPage(pagesLines.get(i), newPage.getKeywords(), counter);
+			webPages.add(newPage);
+			counter++;
+		}
+		WebGraph webgraph = new WebGraph(webPages);
+		return webgraph;
+		
+	}public void getWebPages() {
+		for(int i = 0;i<this.pages.size();i++) {
+			System.out.println(this.pages.get(i).getFirstSplit()+" "+this.pages.get(i).getKeywords());
+		}
+	}
+	public void setWebPages(ArrayList<WebPage> webPage) {
+		this.pages = webPage;
+	}
+	public void setEdges(int[][] edges) {
+		this.edges = edges;
+	}
+	public void addPage(String url, String keywords) {
+		/**
+		 * @see public void addPage(String url, String keywords)
+		 * This method is used to add a new webpage and manipulate the counter to make sure the webpage has the correct index.
+		 */
+		int counter = this.pages.size();
+		WebPage newPage = new WebPage(url, keywords, counter);
+		this.pages.add(newPage);
+	}
+	public WebPage getWebpage(int i) {
+		return pages.get(i);
+	}
+	public ArrayList<WebPage> getPages(){
+		return this.pages;
+	}
+	public void printTable() {
+		/**
+		 * @see public void printTable() this method is used to print out the webpages' using their toString method.
+		 */
+		for(int i = 0;i<this.getPages().size();i++) {
+			System.out.println(this.getWebpage(i).toString());
+		}
+	}
+	public void removePage(String url) {
+		/**
+		 * @see public void removePage(String url)
+		 * This method is used to remove a page and manipulates the indexes to correct them.
+		 */
+		int holder = 0;
+		boolean flag = false;
+		for(int i = 0;i<this.getPages().size();i++) {
+			if(this.getPages().get(i).getFirstSplit().equalsIgnoreCase(url)) {
+				this.pages.remove(this.getWebpage(i));
+				holder = i;
+				flag = true;
+				break;
+			}
+		}if(flag = true) {
+			int i = holder;
+			while(i!=pages.size()) {
+				pages.get(i).setIndex(pages.get(i).getIndex()-1);
+				i++;
+			}
+		}
+	}
+	public int[][] getEdges(){
+		return this.edges;
+	}
+	//public void setEdges(int[][])
+	
+}
